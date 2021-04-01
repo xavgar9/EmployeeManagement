@@ -166,21 +166,42 @@ DELIMITER;
 
 
 
+
+
+
 ###########################################################################################
                                     #CreateUser
 ###########################################################################################
-DROP FUNCTION IF EXISTS CreateUser;
+DROP PROCEDURE IF EXISTS CreateUser;
 DELIMITER //
-CREATE FUNCTION CreateUser(firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), Email VARCHAR(300), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
-  RETURNS VARCHAR(20)
+CREATE PROCEDURE CreateUser(firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
 
   BEGIN
-    DECLARE s INT;
-    SET s = 0;
+    DECLARE domain VARCHAR(14);
+    DECLARE email VARCHAR(300);
+
+    # insert the user without the email
     INSERT INTO Users(FirstLastName, SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate)
-        VALUES (firstLastName, secondLastName, firstName, otherNames, countryID, idTypes, identificationDocument, email, startDate, areaID, status, NOW());
-        SET s = last_insert_id();         
-    RETURN s;
+        VALUES (firstLastName, secondLastName, firstName, otherNames, countryID, idTypes, identificationDocument, "", startDate, areaID, status, NOW());
+
+    # domain creation for the email
+    IF (countryID = 1) THEN
+      SET domain = "cidenet.com.co";
+    ELSEIF (countryID = 2) THEN
+      SET domain = "cidenet.com.us";
+    END IF;
+
+    # creation of the email
+    SELECT CONCAT(LCASE(firstName), ".", LCASE(FirstLastName), "@", domain) INTO email;
+
+    # verify if exist the new email
+    IF (EXISTS(SELECT 1 FROM Users WHERE Users.Email=email)) THEN
+      SELECT CONCAT(LCASE(firstName), ".", LCASE(FirstLastName), last_insert_id(), "@", domain) INTO email;
+    END IF;
+
+    UPDATE Users SET Email=email WHERE Users.ID=last_insert_id();
+    
+    SELECT last_insert_id(), email FROM Users LIMIT 1;
   END; //
 DELIMITER;
 
@@ -216,20 +237,86 @@ DELIMITER;
 ###########################################################################################
 DROP FUNCTION IF EXISTS UpdateUser;
 DELIMITER //
-CREATE FUNCTION UpdateUser(userID INT, firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), Email VARCHAR(300), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
-  RETURNS VARCHAR(20)
+CREATE FUNCTION UpdateUser(userID INT, firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
+  RETURNS VARCHAR(300)
 
   BEGIN
-    DECLARE s VARCHAR(20);
-    SET s = "Not updated";
+    DECLARE ans VARCHAR(300);
+    DECLARE domain VARCHAR(14);
+    DECLARE email VARCHAR(300);
+
+    SET ans = "Not updated";
+
+    # domain creation for the email
+    IF (countryID = 1) THEN
+      SET domain = "cidenet.com.co";
+    ELSEIF (countryID = 2) THEN
+      SET domain = "cidenet.com.us";
+    END IF;
+
+    # creation of the email
+    SELECT CONCAT(LCASE(firstName), ".", LCASE(FirstLastName), "@", domain) INTO email;
+
+    # verify if exist the new email
+    IF (EXISTS(SELECT 1 FROM Users WHERE Users.Email=email)) THEN
+      SELECT CONCAT(LCASE(firstName), ".", LCASE(FirstLastName), userID, "@", domain) INTO email;
+    END IF;
 
     IF (EXISTS(SELECT 1 FROM Users WHERE Users.ID=userID)) THEN
         UPDATE Users SET 
             FirstLastName=firstLastName, SecondLastName=secondLastName, FirstName=firstName, OtherNames=otherNames, CountryID=countryID, IdTypes=idTypes, IdentificationDocument=identificationDocument, Email=email, StartDate=startDate, AreaID=areaID, Status=status, UpdateDate=NOW()
             WHERE 
             Users.ID=userID;
-        SET s = "Updated";
+        SET ans = email;
     END IF;
-    RETURN s;
+    RETURN ans;
   END //
+DELIMITER;
+
+
+
+
+
+
+
+
+
+
+
+###########################################################################################
+                                    #tmp
+###########################################################################################
+DROP FUNCTION IF EXISTS tmp;
+DELIMITER //
+CREATE FUNCTION tmp(firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
+  RETURNS VARCHAR(300)
+
+  BEGIN
+    DECLARE domain VARCHAR(14);
+    DECLARE email VARCHAR(300);
+    DECLARE emailTwo VARCHAR(300);
+
+    # insert the user without the email
+    INSERT INTO Users(FirstLastName, SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate)
+        VALUES (firstLastName, secondLastName, firstName, otherNames, countryID, idTypes, identificationDocument, "", startDate, areaID, status, NOW());
+
+    # domain creation for the email
+    IF (countryID = 1) THEN
+      SET domain = "cidenet.com.co";
+    ELSEIF (countryID = 2) THEN
+      SET domain = "cidenet.com.us";
+    END IF;
+
+    # creation of the email
+    SELECT CONCAT(LCASE(firstName), ".", LCASE(FirstLastName), "@", domain) INTO email;
+
+    # verify if exist the new email
+    IF (EXISTS(SELECT 1 FROM Users WHERE Users.Email=email)) THEN
+      SELECT CONCAT(LCASE(firstName), ".", LCASE(FirstLastName), last_insert_id(), "@", domain) INTO email;
+    END IF;
+
+    UPDATE Users SET Email=email WHERE Users.ID=last_insert_id();
+    
+    RETURN email;
+  END; //
 DELIMITER;

@@ -49,17 +49,13 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "CountryID is empty or not valid")
 		return
-	case (newUser.IdTypes == nil) || (*newUser.IdTypes*1 <= 0):
+	case (newUser.DocumentTypeID == nil) || (*newUser.DocumentTypeID*1 <= 0):
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "IdTypes is empty or not valid")
+		fmt.Fprintf(w, "DocumentTypeID is empty or not valid")
 		return
-	case (newUser.IdentificationDocument == nil) || (len(*newUser.IdentificationDocument) == 0):
+	case (newUser.Document == nil) || (len(*newUser.Document) == 0):
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "IdentificationDocument is empty or not valid")
-		return
-	case (newUser.Email == nil) || (len(*newUser.Email) == 0):
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Email is empty or not valid")
+		fmt.Fprintf(w, "Document is empty or not valid")
 		return
 	case (newUser.StartDate == nil) || (len(*newUser.StartDate) == 0):
 		w.WriteHeader(http.StatusBadRequest)
@@ -74,7 +70,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Status is empty or not valid")
 		return
 	default:
-		rows, err := Db.Query("SELECT CreateUser(?,?,?,?,?,?,?,?,?,?,?)", newUser.FirstLastName, newUser.SecondLastName, newUser.FirstName, newUser.OtherNames, newUser.CountryID, newUser.IdTypes, newUser.IdentificationDocument, newUser.Email, newUser.StartDate, newUser.AreaID, newUser.Status)
+		rows, err := Db.Query("CALL CreateUser(?,?,?,?,?,?,?,?,?,?)", newUser.FirstLastName, newUser.SecondLastName, newUser.FirstName, newUser.OtherNames, newUser.CountryID, newUser.DocumentTypeID, newUser.Document, newUser.StartDate, newUser.AreaID, newUser.Status)
 		defer rows.Close()
 		if err != nil {
 			w.WriteHeader(http.StatusConflict)
@@ -82,22 +78,18 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		for rows.Next() {
+			var userID int
 			var result string
-			if err := rows.Scan(&result); err != nil {
+			if err := rows.Scan(&userID, &result); err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println("(SQL) ", err.Error())
 				return
 			}
-			if result != "0" {
-				resultINT, err := strconv.Atoi(result)
-				if err != nil {
-					fmt.Println(err.Error())
-					return
-				}
-				newUser.ID = &resultINT
-				w.WriteHeader(http.StatusCreated)
-				json.NewEncoder(w).Encode(newUser)
-				return
-			}
+			newUser.ID = &userID
+			newUser.Email = &result
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(newUser)
+
 		}
 		return
 	}
@@ -122,9 +114,9 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	for rows.Next() {
-		var userID, countryID, idTypes, areaID int
-		var firstLastName, secondLastName, firstName, otherNames, country, idTypesName, identificationDocument, email, startDate, status, areaName, registrationDate string
-		if err := rows.Scan(&userID, &firstLastName, &secondLastName, &firstName, &otherNames, &countryID, &country, &idTypes, &idTypesName, &identificationDocument, &email, &startDate, &status, &areaID, &areaName, &registrationDate); err != nil {
+		var userID, countryID, documentTypeID, areaID int
+		var firstLastName, secondLastName, firstName, otherNames, country, documentType, document, email, startDate, status, area, registrationDate string
+		if err := rows.Scan(&userID, &firstLastName, &secondLastName, &firstName, &otherNames, &countryID, &country, &documentTypeID, &documentType, &document, &email, &startDate, &status, &areaID, &area, &registrationDate); err != nil {
 			fmt.Fprintf(w, "(SQL) %v", err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -135,7 +127,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, IdTypes: &idTypes, IdTypesName: &idTypesName, IdentificationDocument: &identificationDocument, Email: &email, StartDate: &startDate, AreaID: &areaID, AreaName: &areaName, Status: &status}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		users = append(users, user)
 	}
 	json.NewEncoder(w).Encode(users)
@@ -172,9 +164,9 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	for row.Next() {
-		var userID, countryID, idTypes, areaID int
-		var firstLastName, secondLastName, firstName, otherNames, country, idTypesName, identificationDocument, email, startDate, status, areaName, registrationDate string
-		if err := row.Scan(&userID, &firstLastName, &secondLastName, &firstName, &otherNames, &countryID, &country, &idTypes, &idTypesName, &identificationDocument, &email, &startDate, &status, &areaID, &areaName, &registrationDate); err != nil {
+		var userID, countryID, documentTypeID, areaID int
+		var firstLastName, secondLastName, firstName, otherNames, country, documentType, document, email, startDate, status, area, registrationDate string
+		if err := row.Scan(&userID, &firstLastName, &secondLastName, &firstName, &otherNames, &countryID, &country, &documentTypeID, &documentType, &document, &email, &startDate, &status, &areaID, &area, &registrationDate); err != nil {
 			fmt.Fprintf(w, "(SQL) %v", err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -185,7 +177,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, IdTypes: &idTypes, IdTypesName: &idTypesName, IdentificationDocument: &identificationDocument, Email: &email, StartDate: &startDate, AreaID: &areaID, AreaName: &areaName, Status: &status}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		json.NewEncoder(w).Encode(user)
 	}
 	return
@@ -229,17 +221,13 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "CountryID is empty or not valid")
 		return
-	case (updatedUser.IdTypes == nil) || (*updatedUser.IdTypes*1 <= 0):
+	case (updatedUser.DocumentTypeID == nil) || (*updatedUser.DocumentTypeID*1 <= 0):
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "IdTypes is empty or not valid")
+		fmt.Fprintf(w, "DocumentTypeID is empty or not valid")
 		return
-	case (updatedUser.IdentificationDocument == nil) || (len(*updatedUser.IdentificationDocument) == 0):
+	case (updatedUser.Document == nil) || (len(*updatedUser.Document) == 0):
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "IdentificationDocument is empty or not valid")
-		return
-	case (updatedUser.Email == nil) || (len(*updatedUser.Email) == 0):
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Email is empty or not valid")
+		fmt.Fprintf(w, "Document is empty or not valid")
 		return
 	case (updatedUser.StartDate == nil) || (len(*updatedUser.StartDate) == 0):
 		w.WriteHeader(http.StatusBadRequest)
@@ -260,7 +248,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Println(err)
 		}
-		row, err := Db.Query("SELECT UpdateUser(?,?,?,?,?,?,?,?,?,?,?,?)", updatedUser.ID, updatedUser.FirstLastName, updatedUser.SecondLastName, updatedUser.FirstName, updatedUser.OtherNames, updatedUser.CountryID, updatedUser.IdTypes, updatedUser.IdentificationDocument, updatedUser.Email, updatedUser.StartDate, updatedUser.AreaID, updatedUser.Status)
+		row, err := Db.Query("SELECT UpdateUser(?,?,?,?,?,?,?,?,?,?,?)", updatedUser.ID, updatedUser.FirstLastName, updatedUser.SecondLastName, updatedUser.FirstName, updatedUser.OtherNames, updatedUser.CountryID, updatedUser.DocumentTypeID, updatedUser.Document, updatedUser.StartDate, updatedUser.AreaID, updatedUser.Status)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Fprintf(w, "(SQL) %v", err.Error())
@@ -273,9 +261,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("(SQL) ", err.Error())
 				return
 			}
-			if result != "Updated" {
+			if result == "Not updated" {
 				w.WriteHeader(http.StatusInternalServerError)
 			}
+			updatedUser.Email = &result
 			json.NewEncoder(w).Encode(updatedUser)
 		}
 		return
