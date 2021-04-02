@@ -70,26 +70,36 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Status is empty or not valid")
 		return
 	default:
-		rows, err := Db.Query("CALL CreateUser(?,?,?,?,?,?,?,?,?,?)", newUser.FirstLastName, newUser.SecondLastName, newUser.FirstName, newUser.OtherNames, newUser.CountryID, newUser.DocumentTypeID, newUser.Document, newUser.StartDate, newUser.AreaID, newUser.Status)
-		defer rows.Close()
+		row, err := Db.Query("CALL CreateUser(?,?,?,?,?,?,?,?,?,?)", newUser.FirstLastName, newUser.SecondLastName, newUser.FirstName, newUser.OtherNames, newUser.CountryID, newUser.DocumentTypeID, newUser.Document, newUser.StartDate, newUser.AreaID, newUser.Status)
+		defer row.Close()
 		if err != nil {
 			w.WriteHeader(http.StatusConflict)
 			fmt.Println("(SQL) ", err.Error())
 			return
 		}
-		for rows.Next() {
-			var userID int
-			var result string
-			if err := rows.Scan(&userID, &result); err != nil {
+		existDocument := true
+		for row.Next() {
+			existDocument = false
+			var userID, countryID, documentTypeID, areaID int
+			var firstLastName, secondLastName, firstName, otherNames, country, documentType, document, email, startDate, status, area, registrationDate string
+			if err := row.Scan(&userID, &firstLastName, &secondLastName, &firstName, &otherNames, &countryID, &country, &documentTypeID, &documentType, &document, &email, &startDate, &status, &areaID, &area, &registrationDate); err != nil {
+				fmt.Fprintf(w, "(SQL) %v", err.Error())
 				w.WriteHeader(http.StatusInternalServerError)
-				fmt.Println("(SQL) ", err.Error())
 				return
 			}
-			newUser.ID = &userID
-			newUser.Email = &result
+			// Next line is used in production because it has
+			// RegistrationDate attribute
+			var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+
+			// Next line is used in development because RegistrationDate
+			// attribute is always changing.
+			//var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(newUser)
-
+		}
+		if existDocument {
+			w.WriteHeader(http.StatusConflict)
+			fmt.Fprintf(w, "El documento ingresado no es válido o ya existe en el sistema.")
 		}
 		return
 	}
@@ -123,11 +133,11 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		}
 		// Next line is used in production because it has
 		// RegistrationDate attribute
-		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, IdTypes: &idTypes, IdTypesName: &idTypesName, IdentificationDocument: &identificationDocument, Email: &email, StartDate: &startDate, AreaID: &areaID, AreaName: &areaName, Status: &status, RegistrationDate: &registrationDate}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		users = append(users, user)
 	}
 	json.NewEncoder(w).Encode(users)
@@ -173,11 +183,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		}
 		// Next line is used in production because it has
 		// RegistrationDate attribute
-		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, IdTypes: &idTypes, IdTypesName: &idTypesName, IdentificationDocument: &identificationDocument, Email: &email, StartDate: &startDate, AreaID: &areaID, AreaName: &areaName, Status: &status, RegistrationDate: &registrationDate}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+		// var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		json.NewEncoder(w).Encode(user)
 	}
 	return
@@ -248,27 +258,39 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Println(err)
 		}
-		row, err := Db.Query("SELECT UpdateUser(?,?,?,?,?,?,?,?,?,?,?)", updatedUser.ID, updatedUser.FirstLastName, updatedUser.SecondLastName, updatedUser.FirstName, updatedUser.OtherNames, updatedUser.CountryID, updatedUser.DocumentTypeID, updatedUser.Document, updatedUser.StartDate, updatedUser.AreaID, updatedUser.Status)
+		row, err := Db.Query("CALL UpdateUser(?,?,?,?,?,?,?,?,?,?,?)", updatedUser.ID, updatedUser.FirstLastName, updatedUser.SecondLastName, updatedUser.FirstName, updatedUser.OtherNames, updatedUser.CountryID, updatedUser.DocumentTypeID, updatedUser.Document, updatedUser.StartDate, updatedUser.AreaID, updatedUser.Status)
+		defer row.Close()
 		if err != nil {
+			fmt.Println("-> ", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Fprintf(w, "(SQL) %v", err.Error())
 			return
 		}
-
+		existDocument := true
 		for row.Next() {
-			var result string
-			if err := row.Scan(&result); err != nil {
-				fmt.Println("(SQL) ", err.Error())
+			existDocument = false
+			var userID, countryID, documentTypeID, areaID int
+			var firstLastName, secondLastName, firstName, otherNames, country, documentType, document, email, startDate, status, area, registrationDate string
+			if err := row.Scan(&userID, &firstLastName, &secondLastName, &firstName, &otherNames, &countryID, &country, &documentTypeID, &documentType, &document, &email, &startDate, &status, &areaID, &area, &registrationDate); err != nil {
+				fmt.Fprintf(w, "(SQL) %v", err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-			if result == "Not updated" {
-				w.WriteHeader(http.StatusInternalServerError)
-			}
-			updatedUser.Email = &result
+			// Next line is used in production because it has
+			// RegistrationDate attribute
+			var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+
+			// Next line is used in development because RegistrationDate
+			// attribute is always changing.
+			// var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 			json.NewEncoder(w).Encode(updatedUser)
 		}
-		return
+		if existDocument {
+			w.WriteHeader(http.StatusConflict)
+			fmt.Fprintf(w, "El documento ingresado no es válido o ya existe en el sistema.")
+		}
 	}
+	return
 }
 
 // DeleteUser deletes one user by UserID

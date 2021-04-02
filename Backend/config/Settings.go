@@ -6,26 +6,6 @@ const ServerIP string = "192.168.1.18"
 // ServerPort bla bla...
 const ServerPort string = "3600"
 
-// JWTSecret bla bla...
-const JWTSecret string = ("JodddaaaaEsteSecretoSeguro")
-
-// --------------------- LDAP CONNECTION ---------------------
-
-// BindUsernameLDAP bla bla...
-const BindUsernameLDAP string = "inventario@DATECSA.LAN"
-
-// BindPasswordLDAP bla bla...
-const BindPasswordLDAP string = "Passw0rddat.."
-
-// IPLDAP bla bla...
-const IPLDAP string = "192.168.130.21"
-
-// PortLDAP bla bla...
-const PortLDAP int = 389
-
-// BaseDN bla bla...
-const BaseDN string = "dc=DATECSA,dc=LAN"
-
 // ----------------------------------------------------------
 
 // SiteShortName bla bla...
