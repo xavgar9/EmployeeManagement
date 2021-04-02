@@ -89,17 +89,17 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 			}
 			// Next line is used in production because it has
 			// RegistrationDate attribute
-			var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+			//var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 			// Next line is used in development because RegistrationDate
 			// attribute is always changing.
-			//var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+			var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(newUser)
 		}
 		if existDocument {
 			w.WriteHeader(http.StatusConflict)
-			fmt.Fprintf(w, "El documento ingresado no es válido o ya existe en el sistema.")
+			fmt.Fprintf(w, "El documento ingresado no es válido o ya existe en el sistema")
 		}
 		return
 	}
@@ -133,11 +133,11 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		}
 		// Next line is used in production because it has
 		// RegistrationDate attribute
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		users = append(users, user)
 	}
 	json.NewEncoder(w).Encode(users)
@@ -183,11 +183,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		}
 		// Next line is used in production because it has
 		// RegistrationDate attribute
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		// var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		json.NewEncoder(w).Encode(user)
 	}
 	return
@@ -278,16 +278,16 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 			}
 			// Next line is used in production because it has
 			// RegistrationDate attribute
-			var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+			//var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 			// Next line is used in development because RegistrationDate
 			// attribute is always changing.
-			// var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+			var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 			json.NewEncoder(w).Encode(updatedUser)
 		}
 		if existDocument {
 			w.WriteHeader(http.StatusConflict)
-			fmt.Fprintf(w, "El documento ingresado no es válido o ya existe en el sistema.")
+			fmt.Fprintf(w, "El documento ingresado no es válido o ya existe en el sistema")
 		}
 	}
 	return
