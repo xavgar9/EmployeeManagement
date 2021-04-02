@@ -13,8 +13,17 @@ Look for the sql scripts in EmployeeManagement/Backend/scripts and execute them 
 	3. ResetDB
 Look for the next file EmployeeManagement/Backend/config/Mysql.go and change the credentials.
 Look for the next file EmployeeManagement/Frontend/src/config.json and make sure that the BASE_URL_API corresponds to the IP of the Golang server.
-Go to EmployeeManagement/Backend and run go run main.go
-Go to EmployeeManagement/Front and run npm install npm start
+Go to EmployeeManagement/Backend run 
+```
+$ go run main.go
+```
+
+Go to EmployeeManagement/Front and run 
+```
+$ npm install
+$ npm start
+```
+ 
 
 Enjoy it!
 ## Description
