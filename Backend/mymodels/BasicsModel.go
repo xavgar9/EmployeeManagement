@@ -1,16 +1,10 @@
 package mymodels
 
 import (
-	"database/sql"
 	"net/http"
 )
 
-// ProductModel bla bla...
-type ProductModel struct {
-	Db *sql.DB
-}
-
-// Test bla bla...
+// Test struct for the unit test
 type Test struct {
 	Method       string                                   `json:"Method"`
 	URL          string                                   `json:"URL"`
@@ -20,5 +14,5 @@ type Test struct {
 	StatusCode   int                                      `json:"StatusCode"`
 }
 
-// AllTest bla bla...
+// AllTest slice of tests
 type AllTest []Test

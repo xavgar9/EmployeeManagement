@@ -1,78 +1,10 @@
 package config
 
-// ServerIP bla bla...
+// ServerIP info
 const ServerIP string = "192.168.1.18"
 
-// ServerPort bla bla...
+// ServerPort info
 const ServerPort string = "3600"
 
-// ----------------------------------------------------------
-
-// SiteShortName bla bla...
-const SiteShortName string = "SimHCN"
-
-// SiteFullName bla bla...
-const SiteFullName string = "Simulador de Historias Clínicas Nutricionales"
-
-// SiteSlogan bla bla...
-const SiteSlogan string = "¡Aliméntate sano!"
-
-// SiteYear bla bla...
-const SiteYear int = 2021
-
-//SiteRootTemplate bla bla...
-const SiteRootTemplate string = "html/"
-
-//SiteDomainName bla bla...
-const SiteDomainName string = "*"
-
-//SiteProperDomainName bla bla...
-const SiteProperDomainName string = "MaharlikansCode.com"
-
-//SiteHeaderTemplate bla bla...
-const SiteHeaderTemplate = SiteRootTemplate + "layout/header_front.html"
-
-//SiteHeaderAccountTemplate bla bla...
-const SiteHeaderAccountTemplate = SiteRootTemplate + "layout/header_account.html"
-
-//SiteHeaderDashTemplate bla bla...
-const SiteHeaderDashTemplate = SiteRootTemplate + "layout/header_dash.html"
-
-//SiteFooterTemplate bla bla...
-const SiteFooterTemplate = SiteRootTemplate + "layout/footer_front.html"
-
-//SiteFooterAccountTemplate bla bla...
-const SiteFooterAccountTemplate = SiteRootTemplate + "layout/footer_account.html"
-
-//SiteFooterDashTemplate bla bla...
-const SiteFooterDashTemplate = SiteRootTemplate + "layout/footer_dash.html"
-
-//SiteBaseURL bla bla...
-const SiteBaseURL = "http://localhost:3600/"
-
-//SiteTopMenuLogo bla bla...
-const SiteTopMenuLogo = "/static/assets/images/maharlikanscode_top_logo.png"
-
-//EmailLogo bla bla...
-const EmailLogo = SiteBaseURL + "static/assets/images/maharlikanscode_top_logo.png"
-
-//SiteEmail bla bla...
-const SiteEmail = "email@email.com"
-
-//SitePhoneNumbers bla bla...
-const SitePhoneNumbers = ""
-
-//SiteCompanyAddress bla bla...
-const SiteCompanyAddress = "Your company address here"
-
-//SiteTimeZone bla bla...
+//SiteTimeZone info
 const SiteTimeZone = "America/New_York"
-
-//SecretKeyCORS bla bla...
-const SecretKeyCORS = "n&@ix77r#^&^cgeb13w@!+pht^6qu-=("
-
-//MyEncryptDecryptSK bla bla...
-const MyEncryptDecryptSK = "mkc&1*~#^8^#s0^=)^^7%a12"
-
-// UserCookieExp is the user's cookie expiration in number of days
-const UserCookieExp = "30"

@@ -1,6 +1,6 @@
 package mymodels
 
-// User bla bla...
+// User struct
 type User struct {
 	ID               *int    `json:"ID,omitempty"`
 	FirstLastName    *string `json:"FirstLastName,omitempty"`
@@ -21,5 +21,5 @@ type User struct {
 	ModificationDate *string `json:"ModificationDate,omitempty"`
 }
 
-// AllUsers bla bla...
+// AllUsers slice of users
 type AllUsers []User

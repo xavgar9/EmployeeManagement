@@ -14,7 +14,7 @@ import (
 	"github.com/itrepablik/sakto"
 )
 
-//CurrentLocalTime bla bla...
+// CurrentLocalTime for the logs
 var CurrentLocalTime = sakto.GetCurDT(time.Now(), "America/New_York")
 
 // CreateUser endpoint creates in db an user

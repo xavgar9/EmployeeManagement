@@ -1,17 +1,38 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react"
 import config from "../config.json"
-import axios from 'axios'
-import { Button, Modal, Form, Row, Col, Table, Card, Spinner } from 'react-bootstrap'
-import { FontAwesomeIcon as Fas} from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import axios from "axios"
+import Accordion from 'react-bootstrap/Accordion'
+import { Button, Modal, Form, Row, Col, Table, Card, Spinner } from "react-bootstrap"
+import { FontAwesomeIcon as Fas} from "@fortawesome/react-fontawesome"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import MaterialTable  from "material-table"
+import { Delete, Edit } from "@material-ui/icons";
 
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css';
-import { Calendar } from 'react-date-range'
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css";
+import { Calendar } from "react-date-range"
 
-import { UserModel } from '../models/userModel'
+import { UserModel } from "../models/userModel"
+
 
 export default function Users(){ 
+
+  const cols = [
+    {title: "ID", field: "ID"},
+    {title: "Primer apellido", field: "FirstLastName"},
+    {title: "Segundo apellido", field: "SecondLastName"},
+    {title: "Primer nombre", field: "FirstName"},
+    {title: "Otros nombres", field: "OtherNames"},
+    {title: "País", field: "Country"},
+    {title: "Tipo de documento", field: "DocumentType"},
+    {title: "Documento", field: "Document"},
+    {title: "Email", field: "Email"},
+    {title: "Fecha inicio", field: "StartDate"},
+    {title: "Área", field: "Area"},
+    {title: "Estado", field: "Status"},
+    {title: "Fecha de registro", field: "RegistrationDate"}
+  ]
+
   //-------------------------------- DEFINITIONS --------------------------------
   const [currentUser, setCurrentUser] = UserModel()
 
@@ -35,8 +56,8 @@ export default function Users(){
 
   // Shows the error in modal error
   const [backendError, setBackendError] = useState({
-    ErrorCode: '',
-    ErrorDetail: '',
+    ErrorCode: "",
+    ErrorDetail: "",
     Reload: false
   });
 
@@ -138,7 +159,7 @@ export default function Users(){
   // Handle form date verification
   function handleStartDate(event){
     var value = event
-    const startDate = value.toISOString().slice(0, 19).replace('T', ' ').slice(0, 10)
+    const startDate = value.toISOString().slice(0, 19).replace("T", " ").slice(0, 10)
     currentUser["StartDate"] = startDate
     document.getElementById("StartDate").value = startDate
     
@@ -179,7 +200,23 @@ export default function Users(){
     .then (response=>{
       setData(response.data);
     }).catch(error=>{
-      console.log(error);
+      try{
+        setBackendError({
+          ...backendError,
+          ["ErrorCode"]: error.response.status,
+          ["ErrorDetail"]: error.response.data,
+          ["Reload"]: false
+        })
+      } catch (error) {
+        setBackendError({
+          ...backendError,
+          ["ErrorCode"]: 500,
+          ["ErrorDetail"]: "Algo ha fallado en el servidor",
+          ["Reload"]: true
+        })
+      }
+      handleCloseModalLoading()
+      handleShowModalError()
     })
   }
 
@@ -192,7 +229,7 @@ export default function Users(){
 
     handleShowModalLoading()
     await axios({
-      method: 'POST',      
+      method: "POST",      
       url: config.BASE_URL_API + config.USERS.CREATE,
       data: currentUser,
     })
@@ -233,11 +270,15 @@ export default function Users(){
 
   // Update user
   const updateUser = async() => {
-    console.log(currentUser["StartDate"])
+    // convert strings value to int values
+    currentUser["CountryID"] = parseInt(document.getElementById("Country").value)
+    currentUser["DocumentTypeID"] = parseInt(document.getElementById("DocumentTypeID").value)
+    currentUser["AreaID"] = parseInt(document.getElementById("Area").value)
+
     currentUser["StartDate"] = formatDate(currentUser["StartDate"])
     handleShowModalLoading()
     await axios({
-      method: 'POST',      
+      method: "POST",      
       url: config.BASE_URL_API + config.USERS.UPDATE,
       data: currentUser,
     })
@@ -274,7 +315,7 @@ export default function Users(){
   const deleteUser = async() => {
     handleShowModalLoading()
     await axios({
-      method: 'DELETE',      
+      method: "DELETE",      
       url: config.BASE_URL_API + config.USERS.DELETE,
       data: {ID: currentUser.ID},
     })
@@ -330,58 +371,35 @@ export default function Users(){
     <Card>
       <Card.Header>
         <Row>
-          <Col>
-            <h2>Lista de empleados</h2>
-          </Col>
           <Col className="text-right">
             <Button className="left" variant="success btn-sm" onClick={handleShowModalCreate}> <Fas icon={faPlus} /> Nuevo usuario</Button>
           </Col>
         </Row>
       </Card.Header>
-      <Card.Body  Style="max-height: 65vh; overflow-y: scroll;">
-        <Table responsive id="UsersTable">
-          <thead>
-              <tr>
-                  <th style={{textAlign:"center"}} > ID </th>
-                  <th style={{textAlign:"center"}} > Primer apellido </th>
-                  <th style={{textAlign:"center"}} > Segundo apellido </th>
-                  <th style={{textAlign:"center"}} > Primer nombre </th>
-                  <th style={{textAlign:"center"}} > Otros nombres </th>
-                  <th style={{textAlign:"center"}} > País </th>
-                  <th style={{textAlign:"center"}} > Tipo de identificación </th>
-                  <th style={{textAlign:"center"}} > Identificación </th>
-                  <th style={{textAlign:"center"}} > Email </th>
-                  <th style={{textAlign:"center"}} > Fecha de ingreso </th>
-                  <th style={{textAlign:"center"}} > Área </th>
-                  <th style={{textAlign:"center"}} > Estado </th>
-                  <th style={{textAlign:"center"}} > Fecha de registro </th>
-                  <th style={{textAlign:"center"}} > </th>
-              </tr>
-            </thead>
-          <tbody>
-            {(data).map(usr=>(
-              <tr key={usr.ID}>
-                <td style={{textAlign:"center"}} > {usr.ID} </td>
-                <td style={{textAlign:"center"}} > {usr.FirstLastName} </td>
-                <td style={{textAlign:"center"}} > {usr.SecondLastName} </td>
-                <td style={{textAlign:"center"}} > {usr.FirstName} </td>
-                <td style={{textAlign:"center"}} > {usr.OtherNames} </td>
-                <td style={{textAlign:"center"}} > {usr.Country} </td>
-                <td style={{textAlign:"center"}} > {usr.DocumentType} </td>
-                <td style={{textAlign:"center"}} > {usr.Document} </td>
-                <td style={{textAlign:"center"}} > {usr.Email} </td>
-                <td style={{textAlign:"center"}} > {usr.StartDate} </td>
-                <td style={{textAlign:"center"}} > {usr.Area} </td>
-                <td style={{textAlign:"center"}} > {usr.Status} </td>
-                <td style={{textAlign:"center"}} > {usr.RegistrationDate} </td>
-                <td style={{textAlign:"center"}}>
-                    <Button variant="primary btn-sm" onClick={()=>selectCurrentUser(usr, "Update")}>Editar</Button> 
-                    <Button variant="danger btn-sm"  onClick={()=>selectCurrentUser(usr, "Delete")}>Borrar</Button> 
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+      <Card.Body  Style="max-height: 71vh; overflow-y: scroll;">
+        {/* -------------------- DATA TABLE -------------------- */}
+        <MaterialTable
+          title = {<h4>Lista de empleados</h4>}
+          columns = {cols}
+          data = {data}
+          actions = {[
+            {
+              icon: "Edit",
+              tooltip: "Editar",
+              onClick: (event, rowData) => selectCurrentUser(rowData, "Update")
+            },
+            {
+              icon: "Delete",
+              tooltip: "Eliminar",
+              onClick: (event, rowData) => selectCurrentUser(rowData, "Delete")
+            }
+          ]}
+          localization = {{
+            header: {
+              actions: "Acciones"
+            }
+          }}
+        />       
       </Card.Body>
     </Card>
 
@@ -400,19 +418,29 @@ export default function Users(){
     {/* -------------------- MODAL ERROR -------------------- */}
     <Modal show={showModalError} onHide={handleCloseModalError} centered>
         <Modal.Header closeButton>
-            <Modal.Title><h4>Ha ocurrido un error</h4></Modal.Title>
+            <Modal.Title><h4>¡Oops! Algo fue mal :'(</h4></Modal.Title>
         </Modal.Header>
         <Modal.Body>   
-            <Col>
-                <Row>
-                    <Form.Label> Código de error </Form.Label>
-                    <Form.Control type="text" placeholder={backendError.ErrorCode} disabled/>
-                </Row>  
-                <Row>
-                    <Form.Label> Detalles de error </Form.Label>
-                    <Form.Control type="text" placeholder={backendError.ErrorDetail} disabled/>
-                </Row>                            
-            </Col>                 
+          <Col>
+            <p>Tuvimos problemas para ejecutar tu petición, intenta de nuevo.</p>
+            <p>Si el problema persiste, por favor contacte al administrador del sistema.</p>
+            <hr></hr>
+            <Accordion>                                        
+              <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                  Detalles del error
+              </Accordion.Toggle>
+              
+              <Accordion.Collapse eventKey="1">
+                  <div>
+                      <Form.Control plaintext readOnly placeholder="Código de error" />
+                      <Form.Control plaintext readOnly placeholder={backendError.ErrorCode} />
+                      
+                      <Form.Control plaintext readOnly placeholder="Detalles del error" />
+                      <Form.Control plaintext placeholder={backendError.ErrorDetail} disabled/>
+                  </div>
+              </Accordion.Collapse>                    
+            </Accordion>                         
+          </Col>                    
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseModalError}>Cerrar</Button>
@@ -547,7 +575,7 @@ export default function Users(){
                         Fecha de ingreso
                     </Form.Label>
 
-                    <Form.Control type="text" name="StartDate" id="StartDate" maxLength="10" defaultValue={maxDate.toISOString().slice(0, 19).replace('T', ' ').slice(0, 10)} onChange={handleChange} disabled/>
+                    <Form.Control type="text" name="StartDate" id="StartDate" maxLength="10" defaultValue={maxDate.toISOString().slice(0, 19).replace("T", " ").slice(0, 10)} onChange={handleChange} disabled/>
                     <Form.Control.Feedback type="invalid">
                         La fecha de ingreso es obligatoria
                     </Form.Control.Feedback>

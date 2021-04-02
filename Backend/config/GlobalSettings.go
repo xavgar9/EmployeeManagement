@@ -1,7 +1,7 @@
 // Author(s): Xavier Garzón
 // Some of the next code was taken from Maharlikans Code's YouTube Channel
 // Maharlikans Code
-// Novemeber 2020
+// March 2020
 // Golang Web Application Project Structure - Golang Web Development
 // Golang Web Server Using Gorilla Package - Golang Web Development
 // Golang URL Router Using Gorilla Mux - Golang Web Development
