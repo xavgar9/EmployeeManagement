@@ -1,0 +1,26 @@
+{"level":"info","ts":1617339666.458968,"msg":"Server started at 2021-04-02 01:01:06.45729413 -0400 EDT"}
+{"level":"info","ts":1617340069.4473608,"msg":"Server started at 2021-04-02 01:07:49.446955337 -0400 EDT"}
+{"level":"info","ts":1617340110.5967386,"msg":"Server started at 2021-04-02 01:08:30.596310676 -0400 EDT"}
+{"level":"info","ts":1617340120.5894527,"msg":"Server started at 2021-04-02 01:08:40.588993644 -0400 EDT"}
+{"level":"info","ts":1617340201.1765695,"msg":"Server started at 2021-04-02 01:10:01.17618022 -0400 EDT"}
+{"level":"info","ts":1617340226.4670756,"msg":"Server started at 2021-04-02 01:10:26.464615905 -0400 EDT"}
+{"level":"info","ts":1617340239.060884,"msg":"Server started at 2021-04-02 01:10:39.060433605 -0400 EDT"}
+{"level":"info","ts":1617340247.404146,"msg":"Server started at 2021-04-02 01:10:47.403750876 -0400 EDT"}
+{"level":"info","ts":1617340252.8075159,"msg":"Server started at 2021-04-02 01:10:52.806873941 -0400 EDT"}
+{"level":"info","ts":1617340255.2285697,"msg":"Server started at 2021-04-02 01:10:55.227972192 -0400 EDT"}
+{"level":"info","ts":1617340263.5279262,"msg":"Server started at 2021-04-02 01:11:03.527500114 -0400 EDT"}
+{"level":"info","ts":1617340273.7644324,"msg":"Server started at 2021-04-02 01:11:13.764030555 -0400 EDT"}
+{"level":"info","ts":1617340420.8701901,"msg":"Server started at 2021-04-02 01:13:40.869728193 -0400 EDT"}
+{"level":"info","ts":1617340443.2146375,"msg":"Server started at 2021-04-02 01:14:03.214103285 -0400 EDT"}
+{"level":"info","ts":1617340452.6208594,"msg":"Server started at 2021-04-02 01:14:12.620468918 -0400 EDT"}
+{"level":"info","ts":1617340489.8434708,"msg":"Server started at 2021-04-02 01:14:49.84299175 -0400 EDT"}
+{"level":"info","ts":1617340520.9918773,"msg":"Server started at 2021-04-02 01:15:20.991415847 -0400 EDT"}
+{"level":"info","ts":1617340526.5324526,"msg":"dial tcp 127.0.0.1:3305: connect: connection refused2021-04-02 01:15:20.991324357 -0400 EDT"}
+{"level":"info","ts":1617340594.6732793,"msg":"Server started at 2021-04-02 01:16:34.672834059 -0400 EDT"}
+{"level":"info","ts":1617340601.382047,"msg":"Error 1049: Unknown database 'cidenet2'2021-04-02 01:16:34.672742137 -0400 EDT"}
+{"level":"info","ts":1617340624.1722686,"msg":"Server started at 2021-04-02 01:17:04.171842531 -0400 EDT"}
+{"level":"info","ts":1617340625.8816395,"msg":"Error 1045: Access denied for user 'root'@'localhost' (using password: YES)2021-04-02 01:17:04.171755662 -0400 EDT"}
+{"level":"info","ts":1617340631.5296307,"msg":"Server started at 2021-04-02 01:17:11.529146313 -0400 EDT"}
+{"level":"info","ts":1617340634.2559485,"msg":"Error 1045: Access denied for user 'root1'@'localhost' (using password: YES)2021-04-02 01:17:11.529037075 -0400 EDT"}
+{"level":"info","ts":1617340638.78459,"msg":"Server started at 2021-04-02 01:17:18.784209615 -0400 EDT"}
+{"level":"info","ts":1617340833.8793359,"msg":"Server started at 2021-04-02 01:20:33.878691212 -0400 EDT"}

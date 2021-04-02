@@ -30,22 +30,22 @@ INSERT INTO Countries(Name) VALUES("ESTADOS UNIDOS");
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
     VALUES ("GARZON", "LOPEZ", "XAVIER", "", 1, 1, "1144114411", "xavier.garzon@cidenet.com.co", "2021-03-25 14:00:00", 1, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("PALACIO", "GUZMAN", "MICHAEL", "ANDRES", 1, 1, "1133224411", "michael.palacio@cidenet.com.co", "2021-03-26 10:00:00", 4, "ACTIVO", NOW());
+    VALUES ("PALACIO", "GUZMAN", "MICHAEL", "ANDRES", 1, 1, "1133224412", "michael.palacio@cidenet.com.co", "2021-03-26 10:00:00", 4, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("PALACIO", "MARTINEZ", "MICHAEL", "DARIO", 1, 1, "2233224411", "michael.palacio3@cidenet.com.co", "2021-03-26 10:30:00", 3, "ACTIVO", NOW());
+    VALUES ("PALACIO", "MARTINEZ", "MICHAEL", "DARIO", 1, 1, "2233224413", "michael.palacio3@cidenet.com.co", "2021-03-26 10:30:00", 3, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
     VALUES ("GARZON", "GUTIERREZ", "XAVIER", "", 2, 1, "1144114422", "xavier.garzon@cidenet.com.us", "2021-03-25 21:40:00", 2, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
     VALUES ("GARZON", "GUTIERREZ", "XAVIER", "ANTONIO", 2, 2, "TR-0105454", "xavier.garzon5@cidenet.com.us", "2021-03-25 21:45:00", 1, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("GOMEZ", "HERNANDEZ", "ANDRES", "ANDRES", 1, 1, "1133224411", "andres.gomez@cidenet.com.co", "2021-03-26 09:00:00", 1, "ACTIVO", NOW());
+    VALUES ("GOMEZ", "HERNANDEZ", "ANDRES", "ANDRES", 1, 1, "1133224651", "andres.gomez@cidenet.com.co", "2021-03-26 09:00:00", 1, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("HERNANDEZ", "GONZALEZ", "ANDRES", "", 1, 1, "1133224411", "andres.hernandez@cidenet.com.co", "2021-03-26 10:00:00", 2, "ACTIVO", NOW());
+    VALUES ("HERNANDEZ", "GONZALEZ", "ANDRES", "", 1, 1, "1033224411", "andres.hernandez@cidenet.com.co", "2021-03-26 10:00:00", 2, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("PAZ", "FERNADEZ", "MARCO", "DE LA CALLE", 2, 1, "1133224411", "marco.paz@cidenet.com.us", "2021-03-26 11:00:00", 4, "ACTIVO", NOW());
+    VALUES ("PAZ", "FERNADEZ", "MARCO", "DE LA CALLE", 2, 1, "1666224411", "marco.paz@cidenet.com.us", "2021-03-26 11:00:00", 4, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("PINEDA", "DUQUE", "ANDREA", "", 1, 1, "1133224411", "andrea.pineda@cidenet.com.co", "2021-03-26 12:00:00", 5, "ACTIVO", NOW());
+    VALUES ("PINEDA", "DUQUE", "ANDREA", "", 1, 1, "1109024411", "andrea.pineda@cidenet.com.co", "2021-03-26 12:00:00", 5, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("RODRIGUEZ", "MARIN", "SOFIA", "", 2, 1, "1133224411", "sofia.rodriguez@cidenet.com.us", "2021-03-26 14:00:00", 6, "ACTIVO", NOW());
+    VALUES ("RODRIGUEZ", "MARIN", "SOFIA", "", 2, 1, "2133224411", "sofia.rodriguez@cidenet.com.us", "2021-03-26 14:00:00", 6, "ACTIVO", NOW());
 INSERT INTO Users(FirstLastName,SecondLastName,FirstName,OtherNames,CountryID,IdTypes,IdentificationDocument,Email,StartDate,AreaID,Status,RegisterDate) 
-    VALUES ("ESTUPINAN", "TAVAREZ", "MARIANA", "", 2, 1, "1133224411", "mariana.estupinan@cidenet.com.us", "2021-03-26 15:00:00", 7, "ACTIVO", NOW());
+    VALUES ("ESTUPINAN", "TAVAREZ", "MARIANA", "", 2, 1, "4133224411", "mariana.estupinan@cidenet.com.us", "2021-03-26 15:00:00", 7, "ACTIVO", NOW());

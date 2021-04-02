@@ -11,7 +11,7 @@ func MYSQLConnection() (db *sql.DB, err error) {
 	dbDriver := "mysql"
 	dbUser := "root"
 	dbPass := "root"
-	dbName := "cidenet"
+	dbName := "employeemanagement"
 	dbURL := "localhost:3306"
 	db, err = sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbURL+")/"+dbName)
 	return db, err

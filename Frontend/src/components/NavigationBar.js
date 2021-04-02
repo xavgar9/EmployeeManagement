@@ -8,7 +8,7 @@ export const NavigationBar = () => (
         
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                 <Navbar.Brand href="/inicio">
-                    <img src="cidenet-dos-logo.png" className="image" style={{opacity: 1}} alt="Cidenet logo" width="81" height="50" ></img>
+                    <img src="logo.png" className="image" style={{opacity: 1}} alt="Cidenet logo" width="83" height="50" ></img>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

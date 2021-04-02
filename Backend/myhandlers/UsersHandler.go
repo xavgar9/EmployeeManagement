@@ -8,7 +8,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
+
+	"github.com/itrepablik/itrlog"
+	"github.com/itrepablik/sakto"
 )
+
+//CurrentLocalTime bla bla...
+var CurrentLocalTime = sakto.GetCurDT(time.Now(), "America/New_York")
 
 // CreateUser endpoint creates in db an user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -17,7 +24,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "(USER) %v", err.Error())
+		itrlog.Info(err.Error(), CurrentLocalTime)
+		fmt.Fprintf(w, err.Error())
 		return
 	}
 
@@ -25,7 +33,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	defer Db.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Println(err)
+		itrlog.Info(err.Error(), CurrentLocalTime)
+		fmt.Fprintf(w, err.Error())
+		return
 	}
 	json.Unmarshal(reqBody, &newUser)
 	switch {
@@ -74,7 +84,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		defer row.Close()
 		if err != nil {
 			w.WriteHeader(http.StatusConflict)
-			fmt.Println("(SQL) ", err.Error())
+			itrlog.Info(err.Error(), CurrentLocalTime)
+			fmt.Fprintf(w, err.Error())
 			return
 		}
 		existDocument := true
@@ -89,11 +100,11 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 			}
 			// Next line is used in production because it has
 			// RegistrationDate attribute
-			//var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+			var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 			// Next line is used in development because RegistrationDate
 			// attribute is always changing.
-			var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+			// var newUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(newUser)
 		}
@@ -113,14 +124,15 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	defer Db.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Println(err)
+		itrlog.Info(err.Error(), CurrentLocalTime)
+		return
 	}
 	rows, err := Db.Query("CALL GetAllUsers()")
 	defer rows.Close()
 	if err != nil {
-		fmt.Println("-> ", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "(SQL) %v", err.Error())
+		itrlog.Info(err.Error(), CurrentLocalTime)
+		fmt.Fprintf(w, err.Error())
 		return
 	}
 	for rows.Next() {
@@ -133,11 +145,11 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		}
 		// Next line is used in production because it has
 		// RegistrationDate attribute
-		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+		// var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		users = append(users, user)
 	}
 	json.NewEncoder(w).Encode(users)
@@ -163,14 +175,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	defer Db.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		itrlog.Info(err.Error(), CurrentLocalTime)
+		fmt.Fprintf(w, err.Error())
 		return
 	}
 	row, err := Db.Query("CALL GetUser(?)", userID)
 	defer row.Close()
 	if err != nil {
-		fmt.Println("-> ", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "(SQL) %v", err.Error())
+		itrlog.Info(err.Error(), CurrentLocalTime)
+		fmt.Fprintf(w, err.Error())
 		return
 	}
 	for row.Next() {
@@ -183,11 +197,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		}
 		// Next line is used in production because it has
 		// RegistrationDate attribute
-		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 		// Next line is used in development because RegistrationDate
 		// attribute is always changing.
-		var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+		//var user = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 		json.NewEncoder(w).Encode(user)
 	}
 	return
@@ -200,8 +214,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Println("Something went wrong")
-		fmt.Fprintf(w, "(USER) %v", err.Error())
+		fmt.Fprintf(w, err.Error())
 		return
 	}
 	var updatedUser mymodels.User
@@ -256,14 +269,16 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		defer Db.Close()
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Println(err)
+			fmt.Fprintf(w, err.Error())
+			itrlog.Info(err.Error(), CurrentLocalTime)
+			return
 		}
 		row, err := Db.Query("CALL UpdateUser(?,?,?,?,?,?,?,?,?,?,?)", updatedUser.ID, updatedUser.FirstLastName, updatedUser.SecondLastName, updatedUser.FirstName, updatedUser.OtherNames, updatedUser.CountryID, updatedUser.DocumentTypeID, updatedUser.Document, updatedUser.StartDate, updatedUser.AreaID, updatedUser.Status)
 		defer row.Close()
 		if err != nil {
-			fmt.Println("-> ", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Fprintf(w, "(SQL) %v", err.Error())
+			itrlog.Info(err.Error(), CurrentLocalTime)
 			return
 		}
 		existDocument := true
@@ -278,11 +293,11 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 			}
 			// Next line is used in production because it has
 			// RegistrationDate attribute
-			//var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
+			var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status, RegistrationDate: &registrationDate}
 
 			// Next line is used in development because RegistrationDate
 			// attribute is always changing.
-			var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
+			// var updatedUser = mymodels.User{ID: &userID, FirstLastName: &firstLastName, SecondLastName: &secondLastName, FirstName: &firstName, OtherNames: &otherNames, CountryID: &countryID, Country: &country, DocumentTypeID: &documentTypeID, DocumentType: &documentType, Document: &document, Email: &email, StartDate: &startDate, AreaID: &areaID, Area: &area, Status: &status}
 			json.NewEncoder(w).Encode(updatedUser)
 		}
 		if existDocument {
@@ -299,7 +314,8 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "(USER) %v", err.Error())
+		fmt.Fprintf(w, err.Error())
+		itrlog.Info(err.Error(), CurrentLocalTime)
 		return
 	}
 	var deletedUser mymodels.User
@@ -315,18 +331,20 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	defer Db.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Println(err)
+		fmt.Fprintf(w, err.Error())
+		itrlog.Info(err.Error(), CurrentLocalTime)
 	}
 	row, err := Db.Exec("DELETE FROM Users WHERE ID=?", deletedUser.ID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "(SQL) %v", err.Error())
+		fmt.Fprintf(w, err.Error())
+		itrlog.Info(err.Error(), CurrentLocalTime)
 		return
 	}
 
 	count, err := row.RowsAffected()
 	if err != nil {
-		fmt.Fprintf(w, "(SQL) %v", err.Error())
+		fmt.Fprintf(w, err.Error())
 		return
 	}
 	if count == 1 {
