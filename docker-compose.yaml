@@ -2,22 +2,25 @@ version: "3"
 
 services:
   frontend:
+    container_name: frontend
     image: xavgar9/employee-management-frontend
     ports:
       - 3000:3000
     depends_on:
       - backend
   backend:
+    container_name: backend
     image: xavgar9/employee-management-backend
     ports:
       - 8080:8080
     depends_on:
-      - mysql
+      - db
     environment:
       - MYSQL_ROOT_USER=root
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_ROOT_DB=employeemanagement
-  mysql:
+  db:
+    container_name: db
     image: mysql:latest
     ports:
       - "3306:3306"
