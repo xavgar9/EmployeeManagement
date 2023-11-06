@@ -2,13 +2,13 @@ version: "3"
 
 services:
   frontend:
-    image: frontend
+    image: xavgar9/employee-management-frontend
     ports:
       - 3000:3000
     depends_on:
       - backend
   backend:
-    image: backend
+    image: xavgar9/employee-management-backend
     ports:
       - 8080:8080
     depends_on:

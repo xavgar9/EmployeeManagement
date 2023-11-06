@@ -2,12 +2,12 @@
 
 # Build the backend image
 echo "Building backend image..."
-docker build -t backend ./Backend
+docker pull xavgar9/employee-management-backend:latest
 
 # Build the frontend image
 echo "Building frontend image..."
 pwd
-docker build -t frontend ./Frontend
+docker pull xavgar9/employee-management-frontend:latest
 
 # Run docker-compose
 echo "Starting containers with docker-compose..."
