@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  backend:
+    container_name: backend
+    build: .
+    ports:
+      - "8080:8080" # Adjust the port if your application listens on a different port
+    volumes:
+      - .:/app # Mount your local project directory to the container

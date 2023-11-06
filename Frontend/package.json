@@ -19,7 +19,6 @@
     "date-fns": "^2.19.0",
     "jquery": "^3.5.1",
     "material-table": "^1.69.2",
-    "node-sass": "^5.0.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.0",
@@ -31,6 +30,7 @@
     "react-scripts": "4.0.2",
     "reactstrap": "^8.9.0",
     "rxjs": "^6.6.3",
+    "sass": "^1.69.4",
     "styled-components": "^5.2.1",
     "swr": "^0.4.2",
     "web-vitals": "^1.1.0"

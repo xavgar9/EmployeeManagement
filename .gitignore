@@ -14,3 +14,4 @@
 # Dependency directories (remove the comment below to include it)
 Backend/vendor
 Frontend/node_modules
+application_default_credentials.json

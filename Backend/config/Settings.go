@@ -1,10 +1,10 @@
 package config
 
 // ServerIP info
-const ServerIP string = "192.168.1.18"
+const ServerIP string = "localhost"
 
 // ServerPort info
-const ServerPort string = "3600"
+const ServerPort string = "8080"
 
-//SiteTimeZone info
+// SiteTimeZone info
 const SiteTimeZone = "America/New_York"

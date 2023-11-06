@@ -1,0 +1,9 @@
+version: "3"
+services:
+  frontend:
+    container_name: frontend
+    build: .
+    ports:
+      - "3000:3000" # Adjust the port if your application listens on a different port
+    volumes:
+      - .:/app # Mount your local project directory to the container

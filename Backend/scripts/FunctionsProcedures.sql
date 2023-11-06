@@ -3,7 +3,7 @@ SET GLOBAL log_bin_trust_function_creators = 1;
                                     #ExistsDocument
 ###########################################################################################
 DROP FUNCTION IF EXISTS ExistsDocument;
-DELIMITER //
+DELIMITER $$
 CREATE FUNCTION ExistsDocument(identificationDocument VARCHAR(20))
   RETURNS VARCHAR(6)
   BEGIN
@@ -15,15 +15,15 @@ CREATE FUNCTION ExistsDocument(identificationDocument VARCHAR(20))
       SET ans = "true";
     END IF;
     RETURN ans;
-  END; //
-DELIMITER;
+  END$$
+DELIMITER ;
 
 
 ###########################################################################################
                                     #CreateUser
 ###########################################################################################
 DROP PROCEDURE IF EXISTS CreateUser;
-DELIMITER //
+DELIMITER $$
 CREATE PROCEDURE CreateUser(firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
 
   BEGIN
@@ -57,41 +57,41 @@ CREATE PROCEDURE CreateUser(firstLastName VARCHAR(20), secondLastName VARCHAR(20
       SELECT Users.ID, Users.FirstLastName, Users.SecondLastName, Users.FirstName, Users.OtherNames, Countries.ID AS CountryID, Countries.Name AS Country, IdTypes.ID AS DocumentTypeID, IdTypes.Name AS DocumentType, Users.IdentificationDocument, Users.Email, DATE_FORMAT(Users.StartDate,'%d-%m-%Y') AS StartDate, Users.Status, Area.ID AS AreaID, Area.Name AS AreaName, DATE_FORMAT(Users.RegisterDate,'%d-%m-%Y %h:%i:%s') AS RegisterDate
             FROM Users INNER JOIN IdTypes INNER JOIN Area INNER JOIN Countries ON Users.CountryID=Countries.ID AND Users.IdTypes=IdTypes.ID AND Users.AreaID=Area.ID AND Users.ID=last_insert_id();
     END IF;
-  END; //
-DELIMITER;
+  END$$
+DELIMITER ;
 
 
 ###########################################################################################
                                     #GetAllUsers
 ###########################################################################################
 DROP PROCEDURE IF EXISTS GetAllUsers;
-DELIMITER //
+DELIMITER $$
 CREATE PROCEDURE GetAllUsers()
 
   BEGIN    
     SELECT Users.ID, Users.FirstLastName, Users.SecondLastName, Users.FirstName, Users.OtherNames, Countries.ID AS CountryID, Countries.Name AS Country, IdTypes.ID AS DocumentTypeID, IdTypes.Name AS DocumentType, Users.IdentificationDocument, Users.Email, DATE_FORMAT(Users.StartDate,'%d-%m-%Y') AS StartDate, Users.Status, Area.ID AS AreaID, Area.Name AS AreaName, DATE_FORMAT(Users.RegisterDate,'%d-%m-%Y %h:%i:%s') AS RegisterDate
       FROM Users INNER JOIN IdTypes INNER JOIN Area INNER JOIN Countries ON Users.CountryID=Countries.ID AND Users.IdTypes=IdTypes.ID AND Users.AreaID=Area.ID  ORDER BY Users.ID DESC;
-  END //
-DELIMITER;
+  END$$
+DELIMITER ;
 
 ###########################################################################################
                                     #GetUser
 ###########################################################################################
 DROP PROCEDURE IF EXISTS GetUser;
-DELIMITER //
+DELIMITER $$
 CREATE PROCEDURE GetUser(userID INT)
 
   BEGIN    
     SELECT Users.ID, Users.FirstLastName, Users.SecondLastName, Users.FirstName, Users.OtherNames, Countries.ID AS CountryID, Countries.Name AS Country, IdTypes.ID AS DocumentTypeID, IdTypes.Name AS DocumentType, Users.IdentificationDocument, Users.Email, DATE_FORMAT(Users.StartDate,'%d-%m-%Y') AS StartDate, Users.Status, Area.ID AS AreaID, Area.Name AS AreaName, DATE_FORMAT(Users.RegisterDate,'%d-%m-%Y %h:%i:%s') AS RegisterDate
       FROM Users INNER JOIN IdTypes INNER JOIN Area INNER JOIN Countries ON Users.CountryID=Countries.ID AND Users.IdTypes=IdTypes.ID AND Users.AreaID=Area.ID AND Users.ID=userID;
-  END //
-DELIMITER;
+  END$$
+DELIMITER ;
 
 ###########################################################################################
                                     #UpdateUser
 ###########################################################################################
 DROP PROCEDURE IF EXISTS UpdateUser;
-DELIMITER //
+DELIMITER $$
 CREATE PROCEDURE UpdateUser(userID INT, firstLastName VARCHAR(20), secondLastName VARCHAR(20), firstName VARCHAR(20), otherNames VARCHAR(50), CountryID INT, IdTypes INT, IdentificationDocument VARCHAR(20), StartDate DATETIME, AreaID INT, Status VARCHAR(20))
 
   BEGIN
@@ -128,5 +128,5 @@ CREATE PROCEDURE UpdateUser(userID INT, firstLastName VARCHAR(20), secondLastNam
       END IF;
     END IF;
     
-  END //
-DELIMITER;
+  END$$
+DELIMITER ;
