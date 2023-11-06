@@ -4,9 +4,9 @@ run:
 
 run-migrations:
 	@echo "Running migration..."
-	docker exec -i db mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS employeemanagement;"
-	docker exec -i db mysql -uroot -proot employeemanagement < ./Backend/scripts/CreateDB.sql
-	docker exec -i db mysql -uroot -proot employeemanagement < ./Backend/scripts/FunctionsProcedures.sql
-	docker exec -i db mysql -uroot -proot employeemanagement < ./Backend/scripts/ResetDB.sql
+	sudo docker exec -i db mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS employeemanagement;"
+	sudo docker exec -i db mysql -uroot -proot employeemanagement < ./Backend/scripts/CreateDB.sql
+	sudo docker exec -i db mysql -uroot -proot employeemanagement < ./Backend/scripts/FunctionsProcedures.sql
+	sudo docker exec -i db mysql -uroot -proot employeemanagement < ./Backend/scripts/ResetDB.sql
 
 .PHONY: build up
