@@ -12,7 +12,7 @@ func MYSQLConnection() (db *sql.DB, err error) {
 	dbUser := "root"
 	dbPass := "root"
 	dbName := "employeemanagement"
-	dbURL := "localhost:3306"
+	dbURL := "mysql:3306"
 	db, err = sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbURL+")/"+dbName)
 	return db, err
 }

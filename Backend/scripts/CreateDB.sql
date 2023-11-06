@@ -1,27 +1,27 @@
 -- tables
 -- Table: Area
-CREATE TABLE Area (
+CREATE TABLE IF NOT EXISTS Area (
     ID int NOT NULL AUTO_INCREMENT,
     Name varchar(50) NOT NULL,
     CONSTRAINT Area_pk PRIMARY KEY (ID)
 );
 
 -- Table: Countries
-CREATE TABLE Countries (
+CREATE TABLE IF NOT EXISTS Countries (
     ID int NOT NULL AUTO_INCREMENT,
     Name varchar(50) NOT NULL,
     CONSTRAINT Countries_pk PRIMARY KEY (ID)
 );
 
 -- Table: IdTypes
-CREATE TABLE IdTypes (
+CREATE TABLE IF NOT EXISTS IdTypes (
     ID int NOT NULL AUTO_INCREMENT,
     Name varchar(50) NOT NULL,
     CONSTRAINT IdTypes_pk PRIMARY KEY (ID)
 );
 
 -- Table: Users
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
     ID int NOT NULL AUTO_INCREMENT,
     FirstLastName varchar(20) NOT NULL,
     SecondLastName varchar(20) NOT NULL,

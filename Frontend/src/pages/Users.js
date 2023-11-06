@@ -196,10 +196,12 @@ export default function Users(){
   // GetAll users
   const [ data, setData ] = useState([]);
   const getAllUsers=async()=>{
+    console.log(config.BASE_URL_API + config.USERS.GET_ALL)
     await axios.get(config.BASE_URL_API + config.USERS.GET_ALL)
     .then (response=>{
       setData(response.data);
     }).catch(error=>{
+      console.log("the error:", error)
       try{
         setBackendError({
           ...backendError,
