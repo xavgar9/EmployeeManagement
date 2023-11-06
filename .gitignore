@@ -15,3 +15,5 @@
 Backend/vendor
 Frontend/node_modules
 application_default_credentials.json
+gcp-key
+gcp-key.pub

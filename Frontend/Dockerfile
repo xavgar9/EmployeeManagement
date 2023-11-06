@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:14
+FROM node:14-alpine
 
 # Set the working directory to /app
 WORKDIR /app
@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install project dependencies
-RUN npm install
+RUN npm install --production
 
 # Copy the rest of the application code to the working directory
 COPY . .
 
 # Expose a port (if your app listens on a specific port)
-# EXPOSE 3000
+EXPOSE 3000
 
 # Define the command to run your application
 CMD [ "npm", "start" ]
