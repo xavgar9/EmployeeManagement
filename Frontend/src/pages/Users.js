@@ -14,6 +14,8 @@ import { Calendar } from "react-date-range"
 
 import { UserModel } from "../models/userModel"
 
+const parsedURL = new URL(window.location.href);
+const BACKEND_HOST = `${parsedURL.protocol}//${parsedURL.hostname}:8080`;
 
 export default function Users(){ 
 
@@ -196,8 +198,8 @@ export default function Users(){
   // GetAll users
   const [ data, setData ] = useState([]);
   const getAllUsers=async()=>{
-    console.log(config.BASE_URL_API + config.USERS.GET_ALL)
-    await axios.get(config.BASE_URL_API + config.USERS.GET_ALL)
+    console.log(BACKEND_HOST + config.USERS.GET_ALL)
+    await axios.get(BACKEND_HOST + config.USERS.GET_ALL)
     .then (response=>{
       setData(response.data);
     }).catch(error=>{
@@ -232,7 +234,7 @@ export default function Users(){
     handleShowModalLoading()
     await axios({
       method: "POST",      
-      url: config.BASE_URL_API + config.USERS.CREATE,
+      url: BACKEND_HOST + config.USERS.CREATE,
       data: currentUser,
     })
     .then (response=>{
@@ -281,7 +283,7 @@ export default function Users(){
     handleShowModalLoading()
     await axios({
       method: "POST",      
-      url: config.BASE_URL_API + config.USERS.UPDATE,
+      url: BACKEND_HOST + config.USERS.UPDATE,
       data: currentUser,
     })
     .then (response=>{
@@ -318,7 +320,7 @@ export default function Users(){
     handleShowModalLoading()
     await axios({
       method: "DELETE",      
-      url: config.BASE_URL_API + config.USERS.DELETE,
+      url: BACKEND_HOST + config.USERS.DELETE,
       data: {ID: currentUser.ID},
     })
     .then (()=>{

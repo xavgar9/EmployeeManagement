@@ -120,7 +120,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var users mymodels.AllUsers
-	var Db, err = config.MYSQLConnection()
+	Db, err := config.MYSQLConnection()
 	defer Db.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

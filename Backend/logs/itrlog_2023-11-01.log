@@ -1,3 +1,0 @@
-{"level":"info","ts":1698817196.5153859,"msg":"Server started at 2023-11-01 01:39:56.515200834 -0400 EDT"}
-{"level":"error","ts":1698817205.2513838,"msg":"http: Server closed"}
-{"level":"warn","ts":1698817205.2514508,"msg":"Server has been shutdown at 2023-11-01 01:39:56.515200834 -0400 EDT"}
